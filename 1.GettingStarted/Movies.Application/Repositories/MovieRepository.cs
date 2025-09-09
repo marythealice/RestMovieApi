@@ -1,6 +1,5 @@
-﻿namespace Movies.Application.Repositories
+﻿namespace Movies.Application.Repositories;
+
+internal class MovieRepository : IMovieRepository
 {
-    internal class MovieRepository : IMovieRepository
-    {
-    }
 }

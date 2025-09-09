@@ -1,6 +1,12 @@
-﻿namespace Movies.Application.Repositories
+﻿using Movies.Application.Models;
+
+namespace Movies.Application.Repositories;
+
+internal interface IMovieRepository
 {
-    internal interface IMovieRepository
-    {
-    }
+    Task<bool> CreateAsync(Movie movie);
+    Task<Movie?> GetByIdAsync(Guid id); // movie is nullable because it might not be found
+    Task<IEnumerable<Movie>> GetAllAsync();
+    Task<bool> UpdateAsync(Movie movie);
+    Task<bool> DeleteByIdAsync(Guid id);
 }
