@@ -1,5 +1,38 @@
-﻿namespace Movies.Application.Repositories;
+﻿using Movies.Application.Models;
 
-internal class MovieRepository : IMovieRepository
+namespace Movies.Application.Repositories;
+
+public class MovieRepository : IMovieRepository
 {
+    private readonly List<Movie> _movies = new(); // temporary database
+
+    // theses methods return Tasks because eventually they will be async methods that call a real database later on
+    public Task<bool> CreateAsync(Movie movie)
+    {
+        _movies.Add(movie);
+        return Task.FromResult(true);
+    }
+    public Task<Movie?> GetByIdAsync(Guid id)
+    {
+        var movie = _movies.SingleOrDefault(x => x.Id == id);
+        return Task.FromResult(movie);
+    }
+    public Task<IEnumerable<Movie>> GetAllAsync()
+    {
+        return Task.FromResult(_movies.AsEnumerable());
+    }
+    public Task<bool> UpdateAsync(Movie movie)
+    {
+        var movieIndex = _movies.FindIndex(x => x.Id == movie.Id);
+        if (movieIndex == -1) return Task.FromResult(false); // movie not found
+
+        _movies[movieIndex] = movie;
+        return Task.FromResult(true);
+    }
+    public Task<bool> DeleteByIdAsync(Guid id)
+    {
+        var moviesRemoved = _movies.RemoveAll(x => x.Id == id); // RemoveAll returns the number of removed items
+        var wasMovieRemoved = moviesRemoved > 0; // checking if at least one movie was removed
+        return Task.FromResult(wasMovieRemoved); // return true if a movie was removed, false otherwise
+    }
 }

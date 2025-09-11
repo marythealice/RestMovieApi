@@ -2,7 +2,7 @@
 
 namespace Movies.Application.Repositories;
 
-internal interface IMovieRepository
+public interface IMovieRepository
 {
     Task<bool> CreateAsync(Movie movie);
     Task<Movie?> GetByIdAsync(Guid id); // movie is nullable because it might not be found
